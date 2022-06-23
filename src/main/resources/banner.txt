@@ -1,0 +1,18 @@
+
+${AnsiColor.BRIGHT_BLUE}
+  ___       _                    ______  _         _  _           _  _____  _                    _ 
+ / _ \     | |                   |  _  \(_)       (_)| |         | |/  __ \| |                  | |
+/ /_\ \  __| | _ __ ___   ______ | | | | _   __ _  _ | |_   __ _ | || /  \/| |  ___   _   _   __| |
+|  _  | / _` || '_ ` _ \ |______|| | | || | / _` || || __| / _` || || |    | | / _ \ | | | | / _` |
+| | | || (_| || | | | | |        | |/ / | || (_| || || |_ | (_| || || \__/\| || (_) || |_| || (_| |
+\_| |_/ \__,_||_| |_| |_|        |___/  |_| \__, ||_| \__| \__,_||_| \____/|_| \___/  \__,_| \__,_|
+                                             __/ |                                                 
+
+                                            |___/                                                  
+${application.formatted-version}
+${AnsiColor.GREEN}Nombre de la aplicación: ${application.title}
+${AnsiColor.GREEN}Versión de la aplicación: ${application.version}
+${AnsiColor.BRIGHT_MAGENTA}ADM-DIGITALCLOUD-LAB ${spring-boot.version}
+${AnsiColor.MAGENTA}Java :: (v${java.version})
+${AnsiColor.RED} :: Spring Boot${spring-boot.formatted-version} :: ${AnsiColor.RED}
+${AnsiColor.DEFAULT}
