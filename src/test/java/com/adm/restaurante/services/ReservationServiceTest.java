@@ -118,6 +118,7 @@ public class ReservationServiceTest {
         TURNO_REST.setRestaurante(RESTAURANT);
 
     }
+
     @Test
     public void getReservationTest() throws BookingExceptions {
         Mockito.when(reservationRepository.findById(RESERVATION_ID)).thenReturn(Optional.of(RESERVATION));
@@ -186,14 +187,15 @@ public class ReservationServiceTest {
         Mockito.when(reservationRepository.findByTurnAndRestaurantId(TURNO_REST.getName(), RESTAURANT
                 .getId_restaurante())).thenReturn(OPTIONAL_RESERVATION_EMPTY);
 
+
         Mockito.doThrow(new RuntimeException())
         .when(reservationRepository)
         .save(Mockito.any(ReservationEntity.class));
+
         reservationService.createReservation(RESERVATION_REST);
         fail();
     }
-
-    @Test
+  
     public void cancelReservationTest() throws BookingExceptions {
         Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(Optional.of(RESERVATION));
         Mockito.when(reservationRepository.deleteByLocator(LOCATOR)).thenReturn(Optional.of(RESERVATION));
@@ -217,7 +219,6 @@ public class ReservationServiceTest {
         reservationService.cancelReservation(LOCATOR);
         fail();
     }
- 
 
     @Test
     public void actualizarReservaTest() throws BookingExceptions {
