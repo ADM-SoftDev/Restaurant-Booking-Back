@@ -187,61 +187,43 @@ public class ReservationServiceTest {
         Mockito.when(reservationRepository.findByTurnAndRestaurantId(TURNO_REST.getName(), RESTAURANT
                 .getId_restaurante())).thenReturn(OPTIONAL_RESERVATION_EMPTY);
 
-        Mockito.doThrow(Exception.class)
-                .when(reservationRepository)
-                .save(Mockito.any(ReservationEntity.class));
+
+        Mockito.doThrow(new RuntimeException())
+        .when(reservationRepository)
+        .save(Mockito.any(ReservationEntity.class));
 
         reservationService.createReservation(RESERVATION_REST);
         fail();
     }
-
-    @Test
-    public void deleteReservationTest() throws BookingExceptions {
-        Mockito.when(reservationRepository.deleteByLocator(LOCATOR)).thenReturn(Optional.empty());
-        reservationService.deleteReservation(RESERVATION_ID);
-    }
-
-    @Test
+  
     public void cancelReservationTest() throws BookingExceptions {
         Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(Optional.of(RESERVATION));
-        Mockito.when(reservationRepository.deleteByLocator(LOCATOR)).thenReturn(Optional.empty());
-        final String response = reservationService.cancelReservation(LOCATOR);
-        Assert.assertEquals(response,MESSAGE_DELETE);
+        Mockito.when(reservationRepository.deleteByLocator(LOCATOR)).thenReturn(Optional.of(RESERVATION));
+        
+        reservationService.cancelReservation(LOCATOR);
     }
-
+    
     @Test(expected = BookingExceptions.class)
-    public void cancelReservationFindByLocatorErrorTest() throws BookingExceptions {
+    public void cancelReservationTestNotFountError() throws BookingExceptions {
         Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(Optional.empty());
-        final String response = reservationService.cancelReservation(LOCATOR);
-        Assert.assertEquals(response,MESSAGE_DELETE);
+        Mockito.when(reservationRepository.deleteByLocator(LOCATOR)).thenReturn(Optional.of(RESERVATION));
+        reservationService.cancelReservation(LOCATOR);
         fail();
     }
-
-    @Test(expected = BookingExceptions.class)
-    public void cancelReservationNotfoundErrorTest() throws BookingExceptions {
-        Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(OPTIONAL_RESERVATION_EMPTY);
-        Mockito.when(reservationRepository.deleteByLocator(LOCATOR)).thenReturn(Optional.empty());
-        final String response = reservationService.cancelReservation(LOCATOR);
-        Assert.assertEquals(response,MESSAGE_DELETE);
-        fail();
-    }
-
+    
     /* TES da FAllido*/
     @Test(expected = BookingExceptions.class)
     public void cancelReservationInternaServerErrorTest() throws BookingExceptions {
-        Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(OPTIONAL_RESERVATION_EMPTY);
-        Mockito.doThrow(Exception.class).when(reservationRepository).deleteByLocator(LOCATOR).orElseThrow();
-        final String response = reservationService.cancelReservation(LOCATOR);
-        Assert.assertEquals(response,MESSAGE_DELETE);
+        Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(Optional.of(RESERVATION));
+       Mockito.doThrow(Exception.class).when(reservationRepository).deleteByLocator(LOCATOR);
+        reservationService.cancelReservation(LOCATOR);
         fail();
     }
-
 
     @Test
     public void actualizarReservaTest() throws BookingExceptions {
         Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT);
         Mockito.when(reservationRepository.findById(RESERVATION_ID)).thenReturn(Optional.of(RESERVATION));
-
         Mockito.when(reservationRepository.save(Mockito.any(ReservationEntity.class))).thenReturn(new ReservationEntity());
         reservationService.actualizarReserva(RESERVATION_DTO);
 
