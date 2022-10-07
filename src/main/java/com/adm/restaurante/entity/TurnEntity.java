@@ -25,12 +25,12 @@ public class TurnEntity implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_TURN", unique = true, nullable = false)
-	private Long ID_TURN;
+	private Long ID_TURNO;
 
 	@Column(name = "NAME")
 	private String name;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	@JoinColumn(name = "RESTAURANT_ID", nullable = false)
 	private RestaurantEntity restaurante;
 

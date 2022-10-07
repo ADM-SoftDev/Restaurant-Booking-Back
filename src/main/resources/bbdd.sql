@@ -67,3 +67,35 @@ CREATE TABLE IF NOT EXISTS `BOOKING_PLAZA`.`BOARD` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- UPDATE Table `BOOKING_RESTAURANT`.`RESTAURANT`
+-- -----------------------------------------------------
+ALTER TABLE `booking_restaurant`.`restaurants`
+ADD COLUMN `PRICE` INT(19) NULL AFTER `IMAGE`;
+
+-- -----------------------------------------------------
+-- UPDATE Table `BOOKING_RESTAURANT`.`RESERVATION`
+-- -----------------------------------------------------
+ALTER TABLE `booking_restaurant`.`reservation`
+ADD COLUMN `NAME` VARCHAR(45) NULL AFTER `RESTAURANT_ID`,
+ADD COLUMN `EMAIL` VARCHAR(45) NULL AFTER `NAME`;
+
+-- -----------------------------------------------------
+-- Table `BOOKING_RESTAURANT`.`NOTIFICATION`
+-- -----------------------------------------------------
+CREATE TABLE `booking_restaurant`.`notification` (
+  `ID` INT(19) NOT NULL AUTO_INCREMENT,
+  `TEMPLATE` VARCHAR(800) NULL,
+  `TEMPLATE_TYPE` VARCHAR(45) NULL,
+  PRIMARY KEY (`ID`))
+  ENGINE = InnoDB;
+
+ALTER TABLE `booking_restaurant`.`notification`
+CHANGE COLUMN `TEMPLATE_TYPE` `TEMPLATE_CODE` VARCHAR(45) NULL DEFAULT NULL ;
+
+Reinicio de Contador Auto Increment:
+ALTER TABLE tblname AUTO_INCREMENT = 0;
+
+ALTER TABLE `booking_restaurant`.`reservation`
+ADD COLUMN `PAYMENT` BLOB NULL AFTER `EMAIL`;

@@ -7,21 +7,19 @@ import com.adm.restaurante.entity.ReservationEntity;
 import com.adm.restaurante.entity.RestaurantEntity;
 import com.adm.restaurante.entity.TurnEntity;
 import com.adm.restaurante.exceptions.BookingExceptions;
-import com.adm.restaurante.exceptions.InternalServerErrorException;
 import com.adm.restaurante.repository.ReservationRepository;
 import com.adm.restaurante.repository.RestaurantRepository;
 import com.adm.restaurante.repository.TurnRepository;
 import com.adm.restaurante.service.impl.ReservationServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,7 +58,6 @@ public class ReservationServiceTest {
 
 
     private static final Long RESERVATION_ID = 1L;
-    private static final Long RESERVATION_ID2 = null;
     private static final String LOCATOR = "ADM001";
     public static final String TURN = "Horario 9:00 - 12 :00";
     private static final Long RESTAURANT_ID = 1L;
@@ -87,33 +84,33 @@ public class ReservationServiceTest {
 
         RESTAURANT.setId_restaurante(RESTAURANT_ID);
         RESTAURANT.setName(NAME);
-        RESTAURANT.setDescription(DESCRIPTION);
-        RESTAURANT.setAddress(ADDRESS);
-        RESTAURANT.setImage(IMAGE);
-        RESTAURANT.setTurnos(TURN_LIST);
+        RESTAURANT.setDescripcion(DESCRIPTION);
+        RESTAURANT.setDireccion(ADDRESS);
+        RESTAURANT.setImagen(IMAGE);
+        RESTAURANT.setTurns(TURN_LIST);
         RESTAURANT.setMesas(BOARD_LIST);
         RESTAURANT.setReservas(RESERVATION_LIST);
 
-        RESERVATION.setId_reservation(RESERVATION_ID);
+        RESERVATION.setId_reserva(RESERVATION_ID);
         RESERVATION.setRestaurante(RESTAURANT);
         RESERVATION.setLocator(LOCATOR);
-        RESERVATION.setDate(DATE);
-        RESERVATION.setPersons(PERSONS);
+        RESERVATION.setFecha(DATE);
+        RESERVATION.setPersonas(PERSONS);
         RESERVATION.setTurn(TURN);
 
-        RESERVATION_DTO.setTurnoId(RESERVATION.getTurn());
-        RESERVATION_DTO.setPersons(RESERVATION.getPersons());
-        RESERVATION_DTO.setId(RESERVATION.getId_reservation());
-        RESERVATION_DTO.setRestaurantId(RESERVATION_ID);
+        RESERVATION_DTO.setTurnId(TURN_ID);
+        RESERVATION_DTO.setPersons(RESERVATION.getPersonas());
+        //RESERVATION_DTO.setId_reservation(RESERVATION.getId_reservation());
+        RESERVATION_DTO.setRestaurante_Id(RESERVATION_ID);
         RESERVATION_DTO.setLocator(RESERVATION.getLocator());
-        RESERVATION_DTO.setDate(RESERVATION.getDate());
+        RESERVATION_DTO.setDate(RESERVATION.getFecha());
 
         RESERVATION_REST.setPersonas(PERSONS);
         RESERVATION_REST.setTurnId(TURN_ID);
         RESERVATION_REST.setFecha(DATE);
         RESERVATION_REST.setRestaurantId(RESTAURANT_ID);
 
-        TURNO_REST.setID_TURN(TURN_ID);
+        TURNO_REST.setID_TURNO(TURN_ID);
         TURNO_REST.setName(NAME);
         TURNO_REST.setRestaurante(RESTAURANT);
 
@@ -146,24 +143,24 @@ public class ReservationServiceTest {
     }
 
     @Test
-    public void createReservationTest() throws BookingExceptions {
+    public void createReservationTest() throws BookingExceptions, MessagingException {
         Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT);
         Mockito.when(turnoRepository.findById(TURN_ID)).thenReturn(OPTIONAL_TURN);
-        Mockito.when(reservationRepository.findByTurnAndRestaurantId(TURNO_REST.getName(), RESTAURANT
+        Mockito.when(reservationRepository.findByTurnAndRestaurante(TURNO_REST.getName(), RESTAURANT
                 .getId_restaurante())).thenReturn(OPTIONAL_RESERVATION_EMPTY);
         Mockito.when(reservationRepository.save(Mockito.any(ReservationEntity.class))).thenReturn(new ReservationEntity());
         reservationService.createReservation(RESERVATION_REST);
     }
 
     @Test(expected = BookingExceptions.class)
-    public void createReservationByIDErrorTest() throws BookingExceptions {
+    public void createReservationByIDErrorTest() throws BookingExceptions, MessagingException {
         Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT_EMPTY);
         reservationService.createReservation(RESERVATION_REST);
         fail();
     }
 
     @Test(expected = BookingExceptions.class)
-    public void createReservationByIDTurnoErrorTest() throws BookingExceptions {
+    public void createReservationByIDTurnoErrorTest() throws BookingExceptions, MessagingException {
         Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT);
         Mockito.when(turnoRepository.findById(TURN_ID)).thenReturn(OPTIONAL_TURN_EMPTY);
         reservationService.createReservation(RESERVATION_REST);
@@ -171,23 +168,23 @@ public class ReservationServiceTest {
     }
 
     @Test(expected = BookingExceptions.class)
-    public void createReservationByIDTurnoAndRestaurantErrorTest() throws BookingExceptions {
+    public void createReservationByIDTurnoAndRestaurantErrorTest() throws BookingExceptions, MessagingException {
         Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT);
         Mockito.when(turnoRepository.findById(TURN_ID)).thenReturn(OPTIONAL_TURN);
-        Mockito.when(reservationRepository.findByTurnAndRestaurantId(TURNO_REST.getName(), RESTAURANT
+        Mockito.when(reservationRepository.findByTurnAndRestaurante(TURNO_REST.getName(), RESTAURANT
                 .getId_restaurante())).thenReturn(OPTIONAL_RESERVATION);
         reservationService.createReservation(RESERVATION_REST);
         fail();
     }
-    /* TES da FAllido*/
+
     @Test(expected= BookingExceptions.class)
-    public void createReservationInternalServerErrorTest() throws BookingExceptions {
+    public void createReservationInternalServerErrorTest() throws BookingExceptions, MessagingException {
         Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT);
         Mockito.when(turnoRepository.findById(TURN_ID)).thenReturn(OPTIONAL_TURN);
-        Mockito.when(reservationRepository.findByTurnAndRestaurantId(TURNO_REST.getName(), RESTAURANT
+        Mockito.when(reservationRepository.findByTurnAndRestaurante(TURNO_REST.getName(), RESTAURANT
                 .getId_restaurante())).thenReturn(OPTIONAL_RESERVATION_EMPTY);
 
-        Mockito.doThrow(Exception.class)
+        Mockito.doThrow(new RuntimeException())
                 .when(reservationRepository)
                 .save(Mockito.any(ReservationEntity.class));
 
@@ -202,7 +199,7 @@ public class ReservationServiceTest {
     }
 
     @Test
-    public void cancelReservationTest() throws BookingExceptions {
+    public void cancelReservationTest() throws BookingExceptions, MessagingException {
         Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(Optional.of(RESERVATION));
         Mockito.when(reservationRepository.deleteByLocator(LOCATOR)).thenReturn(Optional.empty());
         final String response = reservationService.cancelReservation(LOCATOR);
@@ -210,7 +207,7 @@ public class ReservationServiceTest {
     }
 
     @Test(expected = BookingExceptions.class)
-    public void cancelReservationFindByLocatorErrorTest() throws BookingExceptions {
+    public void cancelReservationFindByLocatorErrorTest() throws BookingExceptions, MessagingException {
         Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(Optional.empty());
         final String response = reservationService.cancelReservation(LOCATOR);
         Assert.assertEquals(response,MESSAGE_DELETE);
@@ -218,7 +215,7 @@ public class ReservationServiceTest {
     }
 
     @Test(expected = BookingExceptions.class)
-    public void cancelReservationNotfoundErrorTest() throws BookingExceptions {
+    public void cancelReservationNotfoundErrorTest() throws BookingExceptions, MessagingException {
         Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(OPTIONAL_RESERVATION_EMPTY);
         Mockito.when(reservationRepository.deleteByLocator(LOCATOR)).thenReturn(Optional.empty());
         final String response = reservationService.cancelReservation(LOCATOR);
@@ -226,11 +223,11 @@ public class ReservationServiceTest {
         fail();
     }
 
-    /* TES da FAllido*/
+
     @Test(expected = BookingExceptions.class)
-    public void cancelReservationInternaServerErrorTest() throws BookingExceptions {
-        Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(OPTIONAL_RESERVATION_EMPTY);
-        Mockito.doThrow(Exception.class).when(reservationRepository).deleteByLocator(LOCATOR).orElseThrow();
+    public void cancelReservationInternaServerErrorTest() throws BookingExceptions, MessagingException {
+        Mockito.when(reservationRepository.findByLocator(LOCATOR)).thenReturn(Optional.of(RESERVATION));
+        Mockito.doThrow(new RuntimeException()).when(reservationRepository).deleteByLocator(LOCATOR);
         final String response = reservationService.cancelReservation(LOCATOR);
         Assert.assertEquals(response,MESSAGE_DELETE);
         fail();
@@ -238,7 +235,7 @@ public class ReservationServiceTest {
 
 
     @Test
-    public void actualizarReservaTest() throws BookingExceptions {
+    public void actualizarReservaTest() throws BookingExceptions, MessagingException  {
         Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT);
         Mockito.when(reservationRepository.findById(RESERVATION_ID)).thenReturn(Optional.of(RESERVATION));
 
@@ -248,19 +245,37 @@ public class ReservationServiceTest {
     }
 
     @Test(expected = BookingExceptions.class)
-    public void actualizarReservaByIDErrorTest() throws BookingExceptions {
+    public void actualizarReservaByIDErrorTest() throws BookingExceptions , MessagingException {
         Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT_EMPTY);
         reservationService.actualizarReserva(RESERVATION_DTO);
         fail();
     }
 
     @Test(expected= BookingExceptions.class)
-    public void updateReservationNotFoundTest() throws BookingExceptions {;
-        Mockito.when(restaurantRepository.findById(RESERVATION_ID2)).thenReturn(OPTIONAL_RESTAURANT_EMPTY);
-        reservationService.getReservation(RESERVATION_ID2);
-        Mockito.when(reservationRepository.save(Mockito.any(ReservationEntity.class))).thenReturn(new ReservationEntity());
-        Assert.assertNotNull(reservationRepository);
-        Assert.assertSame(reservationService.actualizarReserva(RESERVATION_DTO),MESSAGE_NOT_UPDATE );
+    public void updateReservationInternalServerError() throws BookingExceptions, MessagingException  {;
+        Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT);
+        Mockito.when(reservationRepository.findById(RESERVATION_ID)).thenReturn(Optional.of(RESERVATION));
+
+        Mockito.doThrow(new RuntimeException())
+                .when(reservationRepository)
+                .save(Mockito.any(ReservationEntity.class));
+
+        final String response = reservationService.actualizarReserva(RESERVATION_DTO);
+        Assert.assertSame(response ,MESSAGE_NOT_UPDATE );
+        fail();
+    }
+
+    @Test(expected= BookingExceptions.class)
+    public void updateReservationError() throws BookingExceptions , MessagingException {;
+        Mockito.when(restaurantRepository.findById(RESERVATION_ID)).thenReturn(OPTIONAL_RESTAURANT);
+        Mockito.when(reservationRepository.findById(RESERVATION_ID)).thenReturn(Optional.empty());
+
+        Mockito.doThrow(new RuntimeException())
+                .when(reservationRepository)
+                .save(Mockito.any(ReservationEntity.class));
+
+        final String response = reservationService.actualizarReserva(RESERVATION_DTO);
+        Assert.assertSame(response ,MESSAGE_NOT_UPDATE );
         fail();
     }
 

@@ -14,8 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200/")
 @RequestMapping(path = "/booking-reservation" + "/v1")
 public class ReservationController {
 
@@ -30,7 +32,7 @@ public class ReservationController {
     })
     @PostMapping(value = "/createReserva", produces =  MediaType.APPLICATION_JSON_VALUE)
     public BookingResponses<String> createReservation(@RequestBody @Validated CreateReservationJsonRest createReservation)
-            throws BookingExceptions {
+            throws BookingExceptions, MessagingException {
         return new BookingResponses<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 this.reservatioService.createReservation(createReservation));
     }
@@ -42,7 +44,7 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "No se pudo cancelar Reserva", content = @Content(schema = @Schema(implementation = BookingResponses.class)))
     })
     @DeleteMapping(value = "/cancelarReserva", produces =  MediaType.APPLICATION_JSON_VALUE)
-    public BookingResponses<String> getReservationCancel(@RequestParam  String locator)throws BookingExceptions {
+    public BookingResponses<String> getReservationCancel(@RequestParam  String locator) throws BookingExceptions, MessagingException {
         return new BookingResponses<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 this.reservatioService.cancelReservation(locator));
     }
@@ -80,7 +82,7 @@ public class ReservationController {
     })
     @PutMapping(value = "/updateReservation", produces =  MediaType.APPLICATION_JSON_VALUE)
     public BookingResponses<String> updateReservation(@RequestBody ReservationDto reservationDto  )
-            throws BookingExceptions {
+            throws BookingExceptions, MessagingException  {
         return new BookingResponses<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 this.reservatioService.actualizarReserva(reservationDto));
     }

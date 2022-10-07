@@ -11,9 +11,6 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReservationDto {
 	
-	@JsonProperty("id")
-	private Long id;
-	
 	@JsonProperty("locator")
 	private String locator;
 	
@@ -24,9 +21,15 @@ public class ReservationDto {
 	private Date date;
 	
 	@JsonProperty("turnId")
-	private String turnoId;
+	private Long turnId;
 	
-	@JsonProperty("restaurantId")
-	private Long restaurantId;
+	@JsonProperty("restaurante_Id")
+	private Long restaurante_Id;
+
+	@JsonProperty("name")
+	private String nombre;
+
+	@JsonProperty("email")
+	private String correo;
 
 }

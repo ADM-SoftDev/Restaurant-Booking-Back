@@ -8,7 +8,7 @@ import javax.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table (name="RESTAURANTE")
+@Table (name="RESTAURANTS")
 @Data
 public class RestaurantEntity implements Serializable {
 	
@@ -16,28 +16,31 @@ public class RestaurantEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_RESTAURANTE", unique = true, nullable = false)
+	@Column(name = "ID_RESTAURANT", unique = true, nullable = false)
 	private Long id_restaurante;
 
 	@Column(name = "NAME")
 	private String name;
 
 	@Column(name = "ADDRESS")
-	private String address;
+	private String direccion;
 
 	@Column(name = "DESCRIPTION")
-	private String description;
+	private String descripcion;
 
 	@Column(name = "IMAGE")
-	private String image;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "restaurante")
+	private String imagen;
+
+	@Column(name = "PRICE")
+	private Integer pago;
+
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "restaurante")
 	private List<ReservationEntity> reservas;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "restaurante")
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "restaurante")
 	private List<BoardEntity> mesas;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "restaurante")
-	private List<TurnEntity> turnos;
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "restaurante")
+	private List<TurnEntity> turns;
 
 }

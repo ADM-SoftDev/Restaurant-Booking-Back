@@ -19,7 +19,7 @@ import com.adm.restaurante.exceptions.BookingExceptions;
 import com.adm.restaurante.service.RestaurantService;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200/")
 @RequestMapping(path = "/booking-restaurant" + "/v1")
 @Tag(name="booking-restaurant", description="Catalogo de Restaurantes")
 public class RestauranteController {

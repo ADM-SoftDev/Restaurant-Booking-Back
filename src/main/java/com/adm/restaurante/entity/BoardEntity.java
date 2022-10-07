@@ -1,15 +1,7 @@
 package com.adm.restaurante.entity;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 
@@ -26,16 +18,16 @@ public class BoardEntity implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_BOARD", unique = true, nullable = false)
-	private Long ID_BOARD;
+	private Long ID_MESA;
 	
 	@Column(name = "CAPACITY")
-	private Long capacity;
+	private Long capacidad;
 	
 	@Column(name = "NUMBER")
-	private Long number;
-	
-	
-	@ManyToOne(fetch = FetchType.LAZY)
+	private Long numero;
+
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "RESTAURANT_ID", nullable = false)
 	private RestaurantEntity restaurante;
 

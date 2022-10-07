@@ -17,6 +17,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
 	@Modifying
 	@Transactional
 	Optional<ReservationEntity> deleteByLocator(String localizador);
-	Optional<ReservationEntity> findByTurnAndRestaurantId(String turn, Long id);
+	Optional<ReservationEntity> findByTurnAndRestaurante(String turn, Long Id);
+
 
 }

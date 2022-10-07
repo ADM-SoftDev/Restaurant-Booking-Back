@@ -8,7 +8,6 @@ import com.adm.restaurante.entity.ReservationEntity;
 import com.adm.restaurante.entity.RestaurantEntity;
 import com.adm.restaurante.entity.TurnEntity;
 import com.adm.restaurante.exceptions.BookingExceptions;
-import com.adm.restaurante.exceptions.InternalServerErrorException;
 import com.adm.restaurante.repository.RestaurantRepository;
 import com.adm.restaurante.service.impl.RestaurantServiceImpl;
 import org.junit.Assert;
@@ -44,6 +43,7 @@ public class RestaurantServiceTest {
     public static final RestaurantJsonRest RESTAURANT_JSON = new RestaurantJsonRest();
     public static final RestaurantDto RESTAURANT_REST = new RestaurantDto();
     public static final Optional<RestaurantEntity> OPTIONAL_RESTAURANT = Optional.of(RESTAURANT);
+    public static final Optional<RestaurantEntity> OPTIONAL_RESTAURANT_EMPTY = Optional.empty();
     public static final List<TurnDto> TURN_LIST2 = new ArrayList<>();
     private static final String MESSAGE_UPDATE = "RESTAURANT UPDATE";
     private static final String MESSAGE_ADD = "RESTAURANT ADD";
@@ -55,24 +55,24 @@ public class RestaurantServiceTest {
        MockitoAnnotations.initMocks(this);
         RESTAURANT.setId_restaurante(RESTAURANT_ID);
         RESTAURANT.setName(NAME);
-        RESTAURANT.setDescription(DESCRIPTION);
-        RESTAURANT.setAddress(ADDRESS);
-        RESTAURANT.setImage(IMAGE);
-        RESTAURANT.setTurnos(TURN_LIST);
+        RESTAURANT.setDescripcion(DESCRIPTION);
+        RESTAURANT.setDireccion(ADDRESS);
+        RESTAURANT.setImagen(IMAGE);
+        RESTAURANT.setTurns(TURN_LIST);
         RESTAURANT.setMesas(BOARD_LIST);
         RESTAURANT.setReservas(RESERVATION_LIST);
 
-        RESTAURANT_JSON.setNonmbre(NAME);
+        RESTAURANT_JSON.setNombre(NAME);
         RESTAURANT_JSON.setDescripcion(DESCRIPTION);
         RESTAURANT_JSON.setDireccion(ADDRESS);
         RESTAURANT_JSON.setImagen(IMAGE);
 
         RESTAURANT_REST.setId_restaurante(RESTAURANT_ID);
         RESTAURANT_REST.setName(NAME);
-        RESTAURANT_REST.setDescription(DESCRIPTION);
-        RESTAURANT_REST.setAddreess(ADDRESS);
-        RESTAURANT_REST.setImage(IMAGE);
-        RESTAURANT_REST.setTurn(TURN_LIST2);
+        RESTAURANT_REST.setDescripcion(DESCRIPTION);
+        RESTAURANT_REST.setDireccion(ADDRESS);
+        RESTAURANT_REST.setImagen(IMAGE);
+        RESTAURANT_REST.setTurns(TURN_LIST2);
     }
 
     @Test
@@ -118,19 +118,22 @@ public class RestaurantServiceTest {
         Assert.assertEquals(listresponse.size(),1);
     }
 
+
+    @Test(expected= BookingExceptions.class)
+    public void deleteRestaurantByNameInternalServerError() throws BookingExceptions {
+        Mockito.when(restaurantRepository.deleteByName(NAME)).thenReturn(Optional.empty());
+        Mockito.doThrow(new RuntimeException()).when(restaurantRepository).deleteByName(NAME);
+        final String response = restaurantService.deleteRestaurantByName(NAME);
+        Assert.assertEquals(response,MESSAGE_DELETE);
+        fail();
+    }
+
     @Test
-    public void deleteRestaurantByNameTest() throws BookingExceptions {
+    public void deleteRestaurantByName() throws BookingExceptions {
         Mockito.when(restaurantRepository.deleteByName(NAME)).thenReturn(Optional.empty());
-        Assert.assertEquals(restaurantService.deleteRestaurantByName(NAME),MESSAGE_DELETE);
+        final String response = restaurantService.deleteRestaurantByName(NAME);
+        Assert.assertEquals(response,MESSAGE_DELETE);
     }
-
-    /* TES da FAllido*/
-    @Test(expected = IllegalArgumentException.class)
-    public void deleteRestaurantByNameErrorTest() throws BookingExceptions {
-        Mockito.when(restaurantRepository.deleteByName(NAME)).thenReturn(Optional.empty());
-        Assert.assertEquals(restaurantService.deleteRestaurantByName(NAME),MESSAGE_DELETE);
-    }
-
 
     @Test
     public void altaRestauranteTest() throws BookingExceptions {
@@ -138,12 +141,12 @@ public class RestaurantServiceTest {
         Assert.assertEquals(restaurantService.altaRestaurante(RESTAURANT_JSON),MESSAGE_ADD );
     }
 
-    /* TES da FAllido*/
+
     @Test(expected= BookingExceptions.class)
     public void createReservationInternalServerErrorTest() throws BookingExceptions {
         Mockito.when(restaurantRepository.findById(RESTAURANT_ID)).thenReturn(OPTIONAL_RESTAURANT);
 
-        Mockito.doThrow(Exception.class)
+        Mockito.doThrow(new RuntimeException())
                 .when(restaurantRepository)
                 .save(Mockito.any(RestaurantEntity.class));
 
@@ -160,12 +163,12 @@ public class RestaurantServiceTest {
         Assert.assertSame(restaurantService.actualizarRestaurante(RESTAURANT_REST),MESSAGE_UPDATE );
     }
 
-    /* TES da FAllido*/
+
     @Test(expected= BookingExceptions.class)
     public void actualzarInternalServerErrorTest() throws BookingExceptions {
         Mockito.when(restaurantRepository.findById(RESTAURANT_ID)).thenReturn(OPTIONAL_RESTAURANT);
 
-        Mockito.doThrow(Exception.class)
+        Mockito.doThrow(new RuntimeException())
                 .when(restaurantRepository)
                 .save(Mockito.any(RestaurantEntity.class));
 

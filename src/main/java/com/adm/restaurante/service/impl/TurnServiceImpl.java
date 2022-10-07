@@ -54,6 +54,7 @@ public class TurnServiceImpl implements TurnService {
 		turnoRepository.deleteById(turnoId);
 		LOGGER.info("Localizado eliminado el turno",turnoId);
 		return "SE Ha Eliminado Correctamente el turno";
+
 	}
 
 
@@ -79,7 +80,7 @@ public class TurnServiceImpl implements TurnService {
 		TurnDto turno = this.getTurno(updateTurno.getId());
 		if(turno!=null){
 			final TurnEntity turnoEntity = new TurnEntity();
-			turnoEntity.setID_TURN(updateTurno.getId());
+			turnoEntity.setID_TURNO(updateTurno.getId());
 			turnoEntity.setName(updateTurno.getName());
 			turnoEntity.setRestaurante(restaurantId);
 			try {

@@ -22,15 +22,18 @@ public class RestaurantDto {
 	private String name;
 	
 	@JsonProperty("description")
-	private String description;
+	private String descripcion;
 	
 	@JsonProperty("address")
-	private String addreess;
+	private String direccion;
 	
 	@JsonProperty("image")
-	private String image;
+	private String imagen;
+
+	@JsonProperty("price")
+	private Integer precio;
 	
-	@JsonProperty("turn")
-	private List<TurnDto> turn;
+	@JsonProperty("turns")
+	private List<TurnDto> turns;
 
 }

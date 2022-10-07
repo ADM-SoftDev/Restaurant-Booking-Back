@@ -24,4 +24,6 @@ public interface RestaurantService {
 
 	public String actualizarRestaurante(RestaurantDto addRestaurante)throws BookingExceptions;
 
+	public String actualizaPriceRestaurant( String localizador, int precio )throws BookingExceptions;
+
 }

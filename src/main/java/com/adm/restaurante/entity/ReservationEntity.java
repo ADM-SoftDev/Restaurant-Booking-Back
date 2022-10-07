@@ -3,15 +3,7 @@ package com.adm.restaurante.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 
@@ -25,24 +17,31 @@ public class ReservationEntity implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_RESERVATION", unique = true, nullable = false)
-	private Long id_reservation;
+	private Long id_reserva;
 	
 	@Column(name = "LOCATOR")
 	private String locator;
 	
 	@Column(name = "PERSONS")
-	private Long persons;
+	private Long personas;
 	
 	@Column(name = "DATE")
-	private Date date;
+	private Date fecha;
 	
 	@Column(name = "TURN")
 	private String turn;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RESTAURANTE_ID", nullable = false)
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "RESTAURANT_ID", nullable = false)
 	private RestaurantEntity restaurante;
-	
-	
+
+	@Column(name = "NAME")
+	private String nombre;
+
+	@Column(name = "EMAIL")
+	private String correo;
+
+	@Column(name = "PAYMENT")
+	private boolean payment;
 
 }

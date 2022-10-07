@@ -64,8 +64,8 @@ public class BoardServiceImpl implements BoardService {
 				.orElseThrow(() -> new NotFoundException("ST-404-1", "ID_RESTAURANT_NOT_FOUND"));
 
 		final BoardEntity board = new BoardEntity();
-		board.setCapacity(addBoard.getNumeroPersonas());
-		board.setNumber(addBoard.getNumeroMesa());
+		board.setCapacidad(addBoard.getNumeroPersonas());
+		board.setNumero(addBoard.getNumeroMesa());
 		board.setRestaurante(restaurante);
 		try {
 			boardRepository.save(board);
@@ -83,10 +83,10 @@ public class BoardServiceImpl implements BoardService {
 				.orElseThrow(() -> new NotFoundException("ST-404-1", "ID_RESTAURANT_NOT_FOUND"));
 		if(boardtId!=null){
 			final BoardEntity board = new BoardEntity();
-			board.setID_BOARD(updateBoard.getId_BOARD());
+			board.setID_MESA(updateBoard.getId_BOARD());
 			board.setRestaurante(restaurante);
-			board.setNumber(updateBoard.getNumber());
-			board.setCapacity(updateBoard.getCapacity());
+			board.setNumero(updateBoard.getNumber());
+			board.setCapacidad(updateBoard.getCapacity());
 			try {
 				boardRepository.save(board);
 				return "BOARD UPDATE";

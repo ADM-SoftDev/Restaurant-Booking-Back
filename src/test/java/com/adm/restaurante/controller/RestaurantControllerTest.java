@@ -19,6 +19,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class RestaurantControllerTest {
 
     @Mock
@@ -52,12 +54,12 @@ public class RestaurantControllerTest {
         MockitoAnnotations.initMocks(this);
         RESTAURANT_REST.setId_restaurante(RESTAURANT_ID);
         RESTAURANT_REST.setName(NAME);
-        RESTAURANT_REST.setDescription(DESCRIPTION);
-        RESTAURANT_REST.setAddreess(ADDRESS);
-        RESTAURANT_REST.setImage(IMAGE);
-        RESTAURANT_REST.setTurn(TURN_LIST);
+        RESTAURANT_REST.setDescripcion(DESCRIPTION);
+        RESTAURANT_REST.setDireccion(ADDRESS);
+        RESTAURANT_REST.setImagen(IMAGE);
+        RESTAURANT_REST.setTurns(TURN_LIST);
 
-        RESTAURANT_JSON.setNonmbre(NAME);
+        RESTAURANT_JSON.setNombre(NAME);
         RESTAURANT_JSON.setDescripcion(DESCRIPTION);
         RESTAURANT_JSON.setDireccion(ADDRESS);
         RESTAURANT_JSON.setImagen(IMAGE);

@@ -8,18 +8,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RestaurantJsonRest {
+public class PaymentIntentJsonRest {
 
-    @JsonProperty("nombre")
-    private String nombre;
 
     @JsonProperty("descripcion")
-    private String descripcion;
+    private String description;
 
-    @JsonProperty("direccion")
-    private String direccion;
+    @JsonProperty("precio")
+    private int price;
 
-    @JsonProperty("imagen")
-    private String imagen;
 
 }

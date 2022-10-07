@@ -24,6 +24,12 @@ public class CreateReservationJsonRest {
 	
 	@JsonProperty("restaurantId")
 	private Long restaurantId;
+
+	@JsonProperty("name")
+	private String nombre;
+
+	@JsonProperty("email")
+	private String correo;
 	
 	
 }

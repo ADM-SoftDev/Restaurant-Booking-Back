@@ -72,10 +72,10 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	public String altaRestaurante(RestaurantJsonRest addRestaurante) throws BookingExceptions {
 		final RestaurantEntity restaurant = new RestaurantEntity();
-		restaurant.setName(addRestaurante.getNonmbre());
-		restaurant.setDescription(addRestaurante.getDescripcion());
-		restaurant.setAddress(addRestaurante.getDireccion());
-		restaurant.setImage(addRestaurante.getImagen());
+		restaurant.setName(addRestaurante.getNombre());
+		restaurant.setDescripcion(addRestaurante.getDescripcion());
+		restaurant.setDireccion(addRestaurante.getDireccion());
+		restaurant.setImagen(addRestaurante.getImagen());
 		try {
 			restaurantRepository.save(restaurant);
 		}catch(final Exception e) {
@@ -92,9 +92,9 @@ public class RestaurantServiceImpl implements RestaurantService {
 			final RestaurantEntity restaurant = new RestaurantEntity();
 			restaurant.setId_restaurante(updateRestaurante.getId_restaurante());
 			restaurant.setName(updateRestaurante.getName());
-			restaurant.setDescription(updateRestaurante.getDescription());
-			restaurant.setAddress(updateRestaurante.getAddreess());
-			restaurant.setImage(updateRestaurante.getImage());
+			restaurant.setDescripcion(updateRestaurante.getDescripcion());
+			restaurant.setDireccion(updateRestaurante.getDireccion());
+			restaurant.setImagen(updateRestaurante.getImagen());
 			try {
 				restaurantRepository.save(restaurant);
 				return "RESTAURANT UPDATE";
@@ -108,5 +108,22 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	}
 
+	@Override
+	public String actualizaPriceRestaurant(String localizador, int precio) throws BookingExceptions {
+		/*RestaurantDto restaurante = this.getRestaurantById(updateRestaurante.getId_restaurante());
+		if(restaurante!= null) {
+			final RestaurantEntity restaurant = new RestaurantEntity();
+			restaurant.setPago(precio);
+			try {
+				restaurantRepository.save(restaurant);
+				return "RESTAURANT UPDATE";
+			} catch (final Exception e) {
+				LOGGER.error("INTERNAL SERVER ERROR", e);
+				throw new InternalServerErrorException("ST-500-1", "ERROR_AL_ACTUALIZAR_LOS_DATOS");
+			}
+		}	else {*/
+			return "RESTAURANT NO FOUNT";
+		//}
+	}
 
 }

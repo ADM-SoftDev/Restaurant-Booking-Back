@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import javax.mail.MessagingException;
 import java.util.Date;
 
 public class ReservationControllerTest {
@@ -41,7 +43,7 @@ public class ReservationControllerTest {
     private static final String MESSAGE_CANCEL = "LOCATOR_CANCEL";
 
     @Before
-    public void init() throws BookingExceptions {
+    public void init() throws BookingExceptions, MessagingException {
         MockitoAnnotations.initMocks(this);
 
         createReservationJsonRest.setFecha(DATE);
@@ -49,12 +51,12 @@ public class ReservationControllerTest {
         createReservationJsonRest.setTurnId(TURN_ID);
         createReservationJsonRest.setPersonas(PERSONS);
 
-        reservationDto.setId(RESERVATION_ID);
-        reservationDto.setRestaurantId(RESTAURANT_ID);
+       // reservationDto.setId_reservation(RESERVATION_ID);
+        reservationDto.setRestaurante_Id(RESTAURANT_ID);
         reservationDto.setLocator(LOCATOR);
         reservationDto.setDate(DATE);
         reservationDto.setPersons(PERSONS);
-        reservationDto.setTurnoId(TURN);
+        reservationDto.setTurnId(TURN_ID);
 
         Mockito.when(reservatioService.createReservation(createReservationJsonRest)).thenReturn(LOCATOR);
         Mockito.when(reservatioService.getReservation(RESERVATION_ID)).thenReturn(reservationDto);
@@ -66,7 +68,7 @@ public class ReservationControllerTest {
 
 
     @Test
-    public  void createReservationTest()throws BookingExceptions {
+    public  void createReservationTest() throws BookingExceptions, MessagingException {
         final BookingResponses<String> response = reservationController.createReservation(createReservationJsonRest);
         Assert.assertEquals(response.getStatus(), SUCCESS_STATUS);
         Assert.assertEquals(response.getCode(), SUCCESS_CODE);
@@ -92,7 +94,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public  void updateReservationTest()throws BookingExceptions {
+    public  void updateReservationTest()throws BookingExceptions , MessagingException {
         final BookingResponses<String> response = reservationController.updateReservation(reservationDto);
         Assert.assertEquals(response.getStatus(), SUCCESS_STATUS);
         Assert.assertEquals(response.getCode(), SUCCESS_CODE);
@@ -110,7 +112,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public  void getReservationCancelTest()throws BookingExceptions {
+    public  void getReservationCancelTest() throws BookingExceptions, MessagingException {
         final BookingResponses<String> response = reservationController.getReservationCancel(LOCATOR);
         Assert.assertEquals(response.getStatus(), SUCCESS_STATUS);
         Assert.assertEquals(response.getCode(), SUCCESS_CODE);

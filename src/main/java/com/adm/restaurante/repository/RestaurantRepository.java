@@ -20,5 +20,5 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, Lo
 	List<RestaurantEntity> findRestaurantes();
 	@Modifying
 	@Transactional
-	Optional<RestaurantEntity> deleteByName(String nombreRestaurante);
+	Optional<RestaurantEntity> deleteByName(String name);
 }
